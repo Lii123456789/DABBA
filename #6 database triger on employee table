@@ -1,0 +1,62 @@
+-- 1. Create database for Employee and Audit records
+CREATE DATABASE EmployeeAuditDB;
+
+-- 2. Create Employee table
+CREATE TABLE Employee (
+    employeeno INT PRIMARY KEY,
+    employeename VARCHAR(100),
+    join_date DATE,
+    designation VARCHAR(100),
+    salary INT
+);
+
+-- 3. Insert sample records into Employee table
+INSERT INTO Employee (employeeno, employeename, join_date, designation, salary) VALUES
+(101, 'John Doe', TO_DATE('2015-06-15', 'YYYY-MM-DD'), 'Manager', 85000),
+(102, 'Jane Smith', TO_DATE('2016-08-22', 'YYYY-MM-DD'), 'Developer', 75000),
+(103, 'Emily Brown', TO_DATE('2017-12-11', 'YYYY-MM-DD'), 'Analyst', 65000);
+
+-- 4. Create Employee Audit table to track old values of updated or deleted records
+CREATE TABLE Employee_Audit (
+    audit_id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeno INT,
+    employeename VARCHAR(100),
+    join_date DATE,
+    designation VARCHAR(100),
+    salary INT,
+    action_type VARCHAR(50),
+    action_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Use DELIMITER (needed for MySQL or compatible databases, like MariaDB)
+DELIMITER $$
+
+-- 6. Create a trigger to capture updates and deletions on the Employee table
+CREATE TRIGGER track_employee_update
+AFTER UPDATE OR DELETE ON Employee
+FOR EACH ROW
+BEGIN
+    -- If it's an update, insert old values into the audit table
+    IF (OLD.employeeno IS NOT NULL) THEN
+        INSERT INTO Employee_Audit (employeeno, employeename, join_date, designation, salary, action_type)
+        VALUES (OLD.employeeno, OLD.employeename, OLD.join_date, OLD.designation, OLD.salary, 'UPDATE');
+    END IF;
+
+    -- If it's a deletion, insert old values into the audit table
+    IF (OLD.employeeno IS NOT NULL) THEN
+        INSERT INTO Employee_Audit (employeeno, employeename, join_date, designation, salary, action_type)
+        VALUES (OLD.employeeno, OLD.employeename, OLD.join_date, OLD.designation, OLD.salary, 'DELETE');
+    END IF;
+END $$
+
+-- 7. Change back the delimiter to default
+DELIMITER ;
+
+-- 8. Update an employee's details to test the trigger
+UPDATE Employee SET salary = 90000 WHERE employeeno = 101;
+
+-- 9. Select records from Employee to see the updated data
+SELECT * FROM Employee;
+
+-- 10. Select records from Employee_Audit to see the audit log
+SELECT * FROM Employee_Audit;
