@@ -1,0 +1,73 @@
+-- 1. Create the Employee database
+CREATE DATABASE EmployeeDB;
+
+-- 2. Use the EmployeeDB database
+USE EmployeeDB;
+
+-- 3. Create the Employee table
+CREATE TABLE Employee (
+    employeeno INT PRIMARY KEY,
+    employeename VARCHAR(100),
+    join_date DATE,
+    designation VARCHAR(100),
+    salary INT
+);
+
+-- 4. Insert sample records into Employee table
+INSERT INTO Employee (employeeno, employeename, join_date, designation, salary) VALUES
+(101, 'John Doe', '2015-06-15', 'Manager', 85000),
+(102, 'Jane Smith', '2016-08-22', 'Developer', 75000),
+(103, 'Emily Brown', '2017-12-11', 'Analyst', 65000),
+(104, 'Michael Johnson', '2018-04-10', 'Developer', 70000),
+(105, 'William Clark', '2014-03-19', 'Manager', 90000),
+(106, 'Sophia Lee', '2020-09-15', 'Developer', 95000),
+(107, 'David Wilson', '2021-01-20', 'Manager', 105000),
+(108, 'Olivia Harris', '2019-06-18', 'Analyst', 67000),
+(109, 'Ethan Moore', '2020-03-30', 'Developer', 72000),
+(110, 'Liam White', '2016-07-04', 'Manager', 80000);
+
+-- 5. Use DELIMITER (required for MySQL or compatible databases)
+DELIMITER $$
+
+-- 6. Create procedure to display highest paid employees
+CREATE PROCEDURE UpdateEmployee()
+BEGIN
+    -- Implicit Cursor: Fetching the highest-paid employee
+    DECLARE highest_salary INT;
+
+    -- Implicit cursor example: Get the highest salary from Employee table
+    SELECT MAX(salary) INTO highest_salary FROM Employee;
+    DBMS_OUTPUT.PUT_LINE('Highest Salary: ' || highest_salary);
+
+    -- Explicit Cursor: Fetching top 5 highest-paid employees
+    DECLARE
+        CURSOR top_employees IS
+            SELECT employeeno, employeename, salary
+            FROM Employee
+            ORDER BY salary DESC
+            FETCH FIRST 5 ROWS ONLY;
+
+        employee_record top_employees%ROWTYPE;  -- Row type for cursor
+
+    BEGIN
+        OPEN top_employees;
+        
+        -- Looping through the cursor
+        LOOP
+            FETCH top_employees INTO employee_record;
+            EXIT WHEN top_employees%NOTFOUND;
+
+            DBMS_OUTPUT.PUT_LINE('Employee No: ' || employee_record.employeeno || 
+                                 ', Name: ' || employee_record.employeename || 
+                                 ', Salary: ' || employee_record.salary);
+        END LOOP;
+
+        CLOSE top_employees;
+    END;
+END $$
+
+-- 7. Change delimiter back to default
+DELIMITER ;
+
+-- 8. Call the procedure to display top 5 highest paid employees
+CALL UpdateEmployee();
