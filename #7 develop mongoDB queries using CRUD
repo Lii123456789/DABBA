@@ -1,0 +1,43 @@
+// Inserting 5 documents
+db.teacher.insertMany([
+  { name: "John Doe", subject: "Math", city: "Mumbai", date_of_joining: ISODate("2010-05-20") },
+  { name: "Jane Smith", subject: "Science", city: "Pune", date_of_joining: ISODate("2012-08-15") },
+  { name: "Robert Brown", subject: "TOC", city: "Satara", date_of_joining: ISODate("2015-03-11") },
+  { name: "Emily Davis", subject: "History", city: "Delhi", date_of_joining: ISODate("2013-07-07") },
+  { name: "William Clark", subject: "TOC", city: "Mumbai", date_of_joining: ISODate("2014-01-10") }
+]);
+
+// Display the teacher collection
+db.teacher.find().pretty();
+
+// Inserting 5 documents into a single document (embedding them in an array)
+db.teacher.insertOne({
+  teachers: [
+    { name: "Alice Johnson", subject: "Physics", city: "Bangalore", date_of_joining: ISODate("2016-02-19") },
+    { name: "Paul Martin", subject: "TOC", city: "Kolkata", date_of_joining: ISODate("2017-09-30") },
+    { name: "Rachel Adams", subject: "English", city: "Chennai", date_of_joining: ISODate("2018-10-25") },
+    { name: "Kevin Wilson", subject: "Math", city: "Hyderabad", date_of_joining: ISODate("2019-11-22") },
+    { name: "Olivia Scott", subject: "Science", city: "Bangalore", date_of_joining: ISODate("2020-01-15") }
+  ]
+});
+
+// Display documents in formatted (pretty) way
+db.teacher.find().pretty();
+
+// Finding the first document in the teacher collection
+db.teacher.findOne();
+// Finding teachers who are teaching "TOC"
+db.teacher.find({ subject: "TOC" }).pretty();
+// Find teachers who joined after 2011-06-23
+db.teacher.find({ date_of_joining: { $gt: ISODate("2011-06-23") } }).pretty();
+// Update the city of a teacher
+db.teacher.updateOne(
+  { name: "Robert Brown" }, 
+  { $set: { city: "Nagpur" } }
+);
+// Deleting teachers who belong to Satara city
+db.teacher.deleteMany({ city: "Satara" });
+// Deleting all documents from the teacher collection
+db.teacher.deleteMany({});
+// Deleting the teacher collection
+db.teacher.drop();
