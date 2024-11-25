@@ -1,0 +1,83 @@
+-- 1. Create database to store Hospital details
+CREATE DATABASE HospitalDB;
+
+-- 2. Create Doctors table to store details of Doctors
+CREATE TABLE Doctors (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Education VARCHAR(100),
+    Specialty VARCHAR(100),
+    Salary INT
+);
+
+-- 3. Create Patients table to store details of Patients
+CREATE TABLE Patients (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Date_of_Birth DATE,
+    Illness VARCHAR(100),
+    Email_Id VARCHAR(100),
+    Department VARCHAR(100)
+);
+
+-- 4. Display structure of both the tables
+DESC Doctors;
+DESC Patients;
+
+-- 5. Add at least 6 records in each table
+INSERT INTO Doctors (Id, Name, Education, Specialty, Salary) VALUES
+(1, 'Dr. Smith', 'MBBS', 'Cardiology', 150000),
+(2, 'Dr. Johnson', 'MD', 'Orthopedics', 140000),
+(3, 'Dr. Lee', 'MBBS', 'Cardiology', 160000),
+(4, 'Dr. Brown', 'MD', 'Neurology', 155000),
+(5, 'Dr. Wilson', 'MBBS', 'Dermatology', 130000),
+(6, 'Dr. Taylor', 'MD', 'Pediatrics', 145000);
+
+INSERT INTO Patients (Id, Name, Date_of_Birth, Illness, Email_Id, Department) VALUES
+(1, 'John Doe', '1990-05-14', 'Flu', 'johndoe@example.com', 'General Medicine'),
+(2, 'Jane Smith', '1985-07-22', 'Fracture', 'janesmith@example.com', 'Orthopedics'),
+(3, 'Emily Brown', '2000-12-02', 'Migraine', 'emilybrown@example.com', 'Neurology'),
+(4, 'Michael Johnson', '1995-09-18', 'Skin Rash', NULL, 'Dermatology'),
+(5, 'Sarah Wilson', '1998-03-30', 'Asthma', 'sarahwilson@example.com', 'Pulmonology'),
+(6, 'David Lee', '1980-11-11', 'Heart Disease', 'davidlee@example.com', 'Cardiology');
+
+-- 6. Display all records of Patients table
+SELECT * FROM Patients;
+
+-- 7. Display all Doctors details who are specialized in "Cardiology"
+SELECT * FROM Doctors WHERE Specialty = 'Cardiology';
+
+-- 8. Remove Patients record whose Id is 2
+DELETE FROM Patients WHERE Id = 2;
+
+-- 9. Raise Salary of all Doctors by Rs. 10,000
+UPDATE Doctors SET Salary = Salary + 10000;
+
+-- 10. Add Address field to Doctors table
+ALTER TABLE Doctors ADD Address VARCHAR(255);
+
+-- 11. Make entry of address of each Doctor
+UPDATE Doctors SET Address = '123 Main St' WHERE Id = 1;
+UPDATE Doctors SET Address = '456 Oak Ave' WHERE Id = 2;
+UPDATE Doctors SET Address = '789 Pine Rd' WHERE Id = 3;
+UPDATE Doctors SET Address = '101 Maple Dr' WHERE Id = 4;
+UPDATE Doctors SET Address = '202 Birch Ln' WHERE Id = 5;
+UPDATE Doctors SET Address = '303 Elm St' WHERE Id = 6;
+
+-- 12. Remove the Department field from Patients
+ALTER TABLE Patients DROP COLUMN Department;
+
+-- 13. Rename Illness field to Disease
+ALTER TABLE Patients CHANGE Illness Disease VARCHAR(100);
+
+-- 14. Display Doctors details in descending order of their Salary
+SELECT * FROM Doctors ORDER BY Salary DESC;
+
+-- 15. Display Patients without Email_Id
+SELECT * FROM Patients WHERE Email_Id IS NULL;
+
+-- 16. Remove all records from Doctors table
+DELETE FROM Doctors;
+
+-- 17. Remove Patients table
+DROP TABLE Patients;
