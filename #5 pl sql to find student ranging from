@@ -1,0 +1,54 @@
+-- Create database and use it
+CREATE DATABASE StudentDB;
+USE StudentDB;
+
+-- Create Student_course table
+CREATE TABLE Student_course (
+    Roll_no INT PRIMARY KEY,
+    Course VARCHAR(100),
+    Course_code VARCHAR(10),
+    Semester INT,
+    Total_Marks INT,
+    Percentage DECIMAL(5,2)
+);
+
+-- Insert sample data
+INSERT INTO Student_course (Roll_no, Course, Course_code, Semester, Total_Marks, Percentage) VALUES
+(1, 'Math', 'MATH101', 1, 500, 85.00),
+(2, 'Math', 'MATH101', 1, 500, 72.00),
+(3, 'Physics', 'PHYS101', 1, 500, 65.00),
+(4, 'Math', 'MATH101', 1, 500, 55.00),
+(5, 'Chemistry', 'CHEM101', 1, 500, 45.00);
+
+DELIMITER $$
+
+CREATE PROCEDURE Find_Student_Percentage_Ranges (IN course_name VARCHAR(100))
+BEGIN
+    DECLARE range_100_80 INT DEFAULT 0;
+    DECLARE range_79_70 INT DEFAULT 0;
+    DECLARE range_69_60 INT DEFAULT 0;
+    DECLARE range_59_50 INT DEFAULT 0;
+    DECLARE range_below_49 INT DEFAULT 0;
+
+    -- Counting students based on percentage ranges
+    SELECT COUNT(*) INTO range_100_80 FROM Student_course WHERE Course = course_name AND Percentage BETWEEN 80 AND 100;
+    SELECT COUNT(*) INTO range_79_70 FROM Student_course WHERE Course = course_name AND Percentage BETWEEN 70 AND 79;
+    SELECT COUNT(*) INTO range_69_60 FROM Student_course WHERE Course = course_name AND Percentage BETWEEN 60 AND 69;
+    SELECT COUNT(*) INTO range_59_50 FROM Student_course WHERE Course = course_name AND Percentage BETWEEN 50 AND 59;
+    SELECT COUNT(*) INTO range_below_49 FROM Student_course WHERE Course = course_name AND Percentage < 50;
+
+    -- Display the results
+    DBMS_OUTPUT.PUT_LINE('Number of students with 80-100%: ' || range_100_80);
+    DBMS_OUTPUT.PUT_LINE('Number of students with 70-79%: ' || range_79_70);
+    DBMS_OUTPUT.PUT_LINE('Number of students with 60-69%: ' || range_69_60);
+    DBMS_OUTPUT.PUT_LINE('Number of students with 50-59%: ' || range_59_50);
+    DBMS_OUTPUT.PUT_LINE('Number of students with below 49%: ' || range_below_49);
+END $$
+
+DELIMITER ;
+
+-- Call procedure for Math course
+CALL Find_Student_Percentage_Ranges('Math');
+
+-- Call procedure for Physics course
+CALL Find_Student_Percentage_Ranges('Physics');
