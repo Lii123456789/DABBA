@@ -1,0 +1,38 @@
+-- 1. Create database for Tours and Travels
+CREATE DATABASE ToursAndTravelsDB;
+
+-- 2. Create Places table
+CREATE TABLE Places (Place_id INT PRIMARY KEY, City VARCHAR(100), State VARCHAR(100), Country VARCHAR(100), Season VARCHAR(50), Type VARCHAR(100));
+
+-- 3. Create Customers table
+CREATE TABLE Customers (Customer_id INT PRIMARY KEY, Customer_name VARCHAR(100), City VARCHAR(100), Phone VARCHAR(15), Email VARCHAR(100), Interest VARCHAR(100));
+
+-- 4. Create Bookings table
+CREATE TABLE Bookings (Booking_id INT PRIMARY KEY, Customer_id INT, Place_id INT, Booking_date DATE, FOREIGN KEY (Customer_id) REFERENCES Customers(Customer_id), FOREIGN KEY (Place_id) REFERENCES Places(Place_id));
+
+-- 5. Insert data into Places table
+INSERT INTO Places (Place_id, City, State, Country, Season, Type) VALUES
+(1, 'Paris', 'Ile-de-France', 'France', 'Spring', 'Cultural'),
+(2, 'Goa', 'Goa', 'India', 'Winter', 'Beach'),
+(3, 'New York', 'New York', 'USA', 'Fall', 'Urban'),
+(4, 'Tokyo', 'Tokyo Prefecture', 'Japan', 'Spring', 'Cultural'),
+(5, 'Sydney', 'New South Wales', 'Australia', 'Summer', 'Beach'),
+(6, 'Cape Town', 'Western Cape', 'South Africa', 'Fall', 'Adventure');
+
+-- 6. Insert data into Customers table
+INSERT INTO Customers (Customer_id, Customer_name, City, Phone, Email, Interest) VALUES
+(101, 'John Doe', 'New York', '1234567890', 'john@example.com', 'Cultural'),
+(102, 'Jane Smith', 'London', '0987654321', 'jane@example.com', 'Beach'),
+(103, 'Michael Johnson', 'Mumbai', '1122334455', 'michael@example.com', 'Adventure'),
+(104, 'Emily Brown', 'Sydney', '2233445566', 'emily@example.com', 'Urban'),
+(105, 'David Wilson', 'Cape Town', '3344556677', 'david@example.com', 'Cultural'),
+(106, 'Sarah Davis', 'Tokyo', '4455667788', 'sarah@example.com', 'Cultural');
+
+-- 7. Insert data into Bookings table
+INSERT INTO Bookings (Booking_id, Customer_id, Place_id, Booking_date) VALUES
+(1, 101, 1, '2024-01-15'),
+(2, 102, 2, '2024-02-20'),
+(3, 103, 6, '2024-03-10'),
+(4, 104, 3, '2024-04-05'),
+(5, 105, 4, '2024-05-12'),
+(6, 106, 5, '2024-06-18');
