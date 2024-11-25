@@ -1,0 +1,63 @@
+-- 1. Create database to store Employee details
+CREATE DATABASE EmployeeDB;
+
+-- 2. Create emp table to store details of Employee
+CREATE TABLE emp (Emp_id INT PRIMARY KEY, Fname VARCHAR(50), Lname VARCHAR(50), Department VARCHAR(50), Salary INT);
+
+-- 3. Insert 10 records in emp table
+INSERT INTO emp (Emp_id, Fname, Lname, Department, Salary) VALUES
+(101, 'John', 'Doe', 'Sales', 50000),
+(102, 'Jane', 'Smith', 'Engineering', 60000),
+(103, 'Emily', 'Brown', 'HR', 45000),
+(104, 'Michael', 'Johnson', 'Finance', 47000),
+(105, 'David', 'Lee', 'Sales', 52000),
+(106, 'Sarah', 'Wilson', 'IT', 49000),
+(107, 'Chris', 'Taylor', 'Engineering', 58000),
+(108, 'Anna', 'Davis', 'Development', 53000),
+(109, 'Paul', 'Martinez', 'HR', 46000),
+(110, 'Laura', 'Clark', 'Engineering', 62000);
+
+-- 4. Display all records of emp table
+SELECT * FROM emp;
+
+-- 5. Display all Employee details who work in Sales department
+SELECT * FROM emp WHERE Department = 'Sales';
+
+-- 6. Update the salary of emp id 101 to 55000
+UPDATE emp SET Salary = 55000 WHERE Emp_id = 101;
+
+-- 7. Delete emp having id 105
+DELETE FROM emp WHERE Emp_id = 105;
+
+-- 8. Find the average salary of emp in each Department
+SELECT Department, AVG(Salary) AS AvgSalary FROM emp GROUP BY Department;
+
+-- 9. List names of emp who earn more than Average Salary
+SELECT Fname, Lname FROM emp WHERE Salary > (SELECT AVG(Salary) FROM emp);
+
+-- 10. Retrieve the names of employee who work in either Engineering or HR department
+SELECT Fname, Lname FROM emp WHERE Department IN ('Engineering', 'HR');
+
+-- 11. Retrieve the full names of all emp (concatenating Fname and Lname) and their department
+SELECT CONCAT(Fname, ' ', Lname) AS FullName, Department FROM emp;
+
+-- 12. Retrieve details of emp who work in Finance or IT department (use IN operator)
+SELECT * FROM emp WHERE Department IN ('Finance', 'IT');
+
+-- 13. Retrieve the details of all emp whose last name starts with "S"
+SELECT * FROM emp WHERE Lname LIKE 'S%';
+
+-- 14. Count the Number of employees in each department
+SELECT Department, COUNT(*) AS EmpCount FROM emp GROUP BY Department;
+
+-- 15. Retrieve the names of emp who work in both "Engineering" and "Development" department
+SELECT Fname, Lname FROM emp WHERE Department IN ('Engineering', 'Development');
+
+-- 16. Retrieve details of emp who do not work in "Admin" department
+SELECT * FROM emp WHERE Department != 'Admin';
+
+-- 17. Retrieve the details of emp whose salary is between 40000 and 47000
+SELECT * FROM emp WHERE Salary BETWEEN 40000 AND 47000;
+
+-- 18. Find the highest salary in each department
+SELECT Department, MAX(Salary) AS HighestSalary FROM emp GROUP BY Department;
