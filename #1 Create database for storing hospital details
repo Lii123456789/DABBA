@@ -2,23 +2,10 @@
 CREATE DATABASE HospitalDB;
 
 -- 2. Create Doctors table to store details of Doctors
-CREATE TABLE Doctors (
-    Id INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Education VARCHAR(100),
-    Specialty VARCHAR(100),
-    Salary INT
-);
+CREATE TABLE Doctors (Id INT PRIMARY KEY, Name VARCHAR(100), Education VARCHAR(100), Specialty VARCHAR(100), Salary INT);
 
 -- 3. Create Patients table to store details of Patients
-CREATE TABLE Patients (
-    Id INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Date_of_Birth DATE,
-    Illness VARCHAR(100),
-    Email_Id VARCHAR(100),
-    Department VARCHAR(100)
-);
+CREATE TABLE Patients (Id INT PRIMARY KEY, Name VARCHAR(100),Date_of_Birth DATE, Illness VARCHAR(100), Email_Id VARCHAR(100), Department VARCHAR(100));
 
 -- 4. Display structure of both the tables
 DESC Doctors;
